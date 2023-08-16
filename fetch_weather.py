@@ -3,7 +3,7 @@ from prefect import task, flow, get_run_logger
 from prefect_email import EmailServerCredentials, email_send_message
 
 
-@task(retries=2, retry_delay_seconds=.5)
+@flow(retries=2, retry_delay_seconds=.5)
 def fetch_weather(lat: float, long: float):
     base_url = "https://api.open-meteo.com/v1/forecast"
     weather = httpx.get(
@@ -29,7 +29,7 @@ def fetch_weather(lat: float, long: float):
 #     print(f"Current wind speed C: {wind_speed}")
 #     return wind_speed
 
-@task
+@flow
 def save_weather(temp: float):
     with open("weather.csv", "w+") as w:
         w.write(str(temp))
